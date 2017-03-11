@@ -10,16 +10,18 @@ import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Notification;
 import javax.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import org.vaadin.touchkit.ui.NavigationView;
 import org.vaadin.touchkit.ui.VerticalComponentGroup;
 
 @Component
+@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 public class MenuView extends NavigationView {
 
     @Autowired
-    // Lazy init a sub view using Instance
-    private FormView formView;
+    private SearchView searchView;
 
     public MenuView() {
     }
@@ -29,15 +31,13 @@ public class MenuView extends NavigationView {
         setCaption("Menu");
 
         final VerticalComponentGroup content = new VerticalComponentGroup();
-        Button button = new Button("Form");
-        button.setCaption("TEST");
-        button.addClickListener((ClickEvent event) -> {
-            getNavigationManager().navigateTo(formView);
+        Button btnSearch = new Button("Search");
+        btnSearch.addClickListener((ClickEvent event) -> {
+            getNavigationManager().navigateTo(searchView);
             Notification.show("navigateTo");
         });
-        content.addComponent(button);
+        content.addComponent(btnSearch);
         setContent(content);
     }
-;
 
 }

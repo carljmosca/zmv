@@ -6,12 +6,14 @@
 package com.github.carljmosca;
 
 import com.github.carljmosca.ui.MenuView;
+import com.github.carljmosca.ui.SearchView;
 import com.vaadin.annotations.PreserveOnRefresh;
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.Title;
 import com.vaadin.annotations.Widgetset;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.spring.annotation.SpringUI;
+import com.vaadin.spring.annotation.UIScope;
 import com.vaadin.ui.UI;
 import javax.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,10 +28,13 @@ import org.vaadin.touchkit.ui.NavigationManager;
 @Title("Demo")
 @SpringUI
 @Theme("touchkit")
+@UIScope
 public class DemoUI extends UI {
 
     @Autowired
     MenuView menuView;
+    @Autowired
+    SearchView searchView;
     
     @Override
     protected void init(VaadinRequest request) {
@@ -38,7 +43,10 @@ public class DemoUI extends UI {
     
     @PostConstruct
     public void init() {
-        setContent(new NavigationManager(menuView));
+        NavigationManager navigationManager = new NavigationManager();
+        navigationManager.setPreviousComponent(menuView);
+        navigationManager.setCurrentComponent(searchView);
+        setContent(navigationManager);
     }
 
 //    @PostConstruct
