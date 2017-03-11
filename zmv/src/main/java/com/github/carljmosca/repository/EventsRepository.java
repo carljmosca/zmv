@@ -7,7 +7,11 @@ package com.github.carljmosca.repository;
 
 import com.github.carljmosca.zmv.entity.Events;
 import com.github.carljmosca.zmv.entity.EventsPK;
+import java.util.Date;
+import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 
 /**
@@ -16,5 +20,9 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public interface EventsRepository extends JpaRepository<Events, EventsPK> { 
+    
+    @Query("SELECT e FROM Events e where e.eventsPK.monitorId = :monitorId and e.startTime <= :startTime order by e.startTime desc") 
+    List<Events> findByMonitorAndStartTime(@Param("monitorId")int monitorId, 
+            @Param("startTime")Date startTime);
     
 }

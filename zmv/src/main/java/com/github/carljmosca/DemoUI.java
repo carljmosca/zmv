@@ -15,6 +15,7 @@ import com.vaadin.server.VaadinRequest;
 import com.vaadin.spring.annotation.SpringUI;
 import com.vaadin.spring.annotation.UIScope;
 import com.vaadin.ui.UI;
+import java.util.Date;
 import javax.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.vaadin.touchkit.ui.NavigationManager;
@@ -35,6 +36,8 @@ public class DemoUI extends UI {
     MenuView menuView;
     @Autowired
     SearchView searchView;
+    private int monitorId;
+    private Date eventStartTime;
     
     @Override
     protected void init(VaadinRequest request) {
@@ -49,8 +52,20 @@ public class DemoUI extends UI {
         setContent(navigationManager);
     }
 
-//    @PostConstruct
-//    private void buildUI() {
-//        setContent(mainTabsheet);
-//    }
+    public int getMonitorId() {
+        return monitorId;
+    }
+
+    public void setMonitorId(int monitorId) {
+        this.monitorId = monitorId;
+    }
+
+    public Date getEventStartTime() {
+        return eventStartTime;
+    }
+
+    public void setEventStartTime(Date eventStartTime ) {
+        this.eventStartTime = eventStartTime;
+    }
+
 }

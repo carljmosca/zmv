@@ -5,13 +5,15 @@
  */
 package com.github.carljmosca.ui;
 
+import com.github.carljmosca.DemoUI;
 import com.github.carljmosca.repository.MonitorsRepository;
 import com.github.carljmosca.zmv.entity.Monitors;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
-import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.CssLayout;
 import com.vaadin.ui.Notification;
+import com.vaadin.ui.NativeSelect;
+import java.util.Date;
 import javax.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
@@ -20,7 +22,6 @@ import org.springframework.stereotype.Component;
 import org.vaadin.touchkit.ui.NavigationView;
 import org.vaadin.touchkit.ui.VerticalComponentGroup;
 import org.vaadin.touchkit.ui.DatePicker;
-
 
 /**
  *
@@ -34,7 +35,7 @@ public class SearchView extends NavigationView {
     MonitorsRepository monitorsRepository;
     @Autowired
     EventsView eventsView;
-    ComboBox<Monitors> cmbMonitors;
+    NativeSelect<Monitors> cmbMonitors;
     DatePicker datePicker;
 
     public SearchView() {
@@ -45,7 +46,7 @@ public class SearchView extends NavigationView {
         setCaption("Search");
         VerticalComponentGroup content = new VerticalComponentGroup();
 
-        cmbMonitors = new ComboBox<>();
+        cmbMonitors = new NativeSelect<>();
         cmbMonitors.setItems(monitorsRepository.findAll());
         cmbMonitors.setItemCaptionGenerator(p -> p.getName());
         cmbMonitors.setEmptySelectionAllowed(false);
@@ -56,8 +57,14 @@ public class SearchView extends NavigationView {
 
         final Button submitButton = new Button("Submit");
         submitButton.addClickListener((ClickEvent event) -> {
-            Notification.show("Thanks!");
-            getNavigationManager().navigateTo(eventsView);
+            DemoUI demoUI = (DemoUI) this.getUI();
+            if (cmbMonitors.getValue() != null && datePicker.getValue() != null) {
+                demoUI.setMonitorId(cmbMonitors.getValue().getId());
+                demoUI.setEventStartTime(datePicker.getValue());
+                getNavigationManager().navigateTo(eventsView);
+            } else {
+                Notification.show("Select monitor and date");
+            }
         });
 
         setContent(new CssLayout(content, submitButton));
