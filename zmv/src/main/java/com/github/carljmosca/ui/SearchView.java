@@ -21,6 +21,7 @@ import org.vaadin.touchkit.ui.NavigationView;
 import org.vaadin.touchkit.ui.VerticalComponentGroup;
 import org.vaadin.touchkit.ui.DatePicker;
 
+
 /**
  *
  * @author moscac
@@ -31,9 +32,11 @@ public class SearchView extends NavigationView {
 
     @Autowired
     MonitorsRepository monitorsRepository;
+    @Autowired
+    EventsView eventsView;
     ComboBox<Monitors> cmbMonitors;
     DatePicker datePicker;
-    
+
     public SearchView() {
     }
 
@@ -45,6 +48,8 @@ public class SearchView extends NavigationView {
         cmbMonitors = new ComboBox<>();
         cmbMonitors.setItems(monitorsRepository.findAll());
         cmbMonitors.setItemCaptionGenerator(p -> p.getName());
+        cmbMonitors.setEmptySelectionAllowed(false);
+        cmbMonitors.setEmptySelectionCaption("Select monitor");
         content.addComponent(cmbMonitors);
         datePicker = new DatePicker("Event Date");
         content.addComponent(datePicker);
@@ -52,7 +57,7 @@ public class SearchView extends NavigationView {
         final Button submitButton = new Button("Submit");
         submitButton.addClickListener((ClickEvent event) -> {
             Notification.show("Thanks!");
-            getNavigationManager().navigateBack();
+            getNavigationManager().navigateTo(eventsView);
         });
 
         setContent(new CssLayout(content, submitButton));
