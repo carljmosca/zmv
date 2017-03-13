@@ -28,7 +28,7 @@ import org.vaadin.touchkit.ui.NavigationManager;
 @PreserveOnRefresh
 @Title("Demo")
 @SpringUI
-@Theme("touchkit")
+@Theme("zmvtheme")
 @UIScope
 public class DemoUI extends UI {
 
@@ -47,7 +47,7 @@ public class DemoUI extends UI {
     @PostConstruct
     public void init() {
         NavigationManager navigationManager = new NavigationManager();
-        navigationManager.setPreviousComponent(menuView);
+        //navigationManager.setPreviousComponent(menuView);
         navigationManager.setCurrentComponent(searchView);
         setContent(navigationManager);
     }

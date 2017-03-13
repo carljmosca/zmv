@@ -1,0 +1,15 @@
+@import "../touchkit/touchkit.scss";
+
+@mixin zmvtheme {
+    @include touchkit;
+}
+
+.v-grid-scroller.v-grid-scroller-vertical {
+    visibility: hidden; 
+    padding-right: 1px; 
+    width: 0px; 
+    z-index: 90; 
+    height: 10px !important; 
+    overflow-y: scroll; 
+    top: 10px !important;
+}

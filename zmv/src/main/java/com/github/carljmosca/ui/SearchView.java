@@ -14,6 +14,7 @@ import com.vaadin.ui.CssLayout;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.NativeSelect;
 import java.util.Date;
+import java.util.List;
 import javax.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
@@ -30,33 +31,38 @@ import org.vaadin.touchkit.ui.DatePicker;
 @Component
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 public class SearchView extends NavigationView {
-
+    
     @Autowired
     MonitorsRepository monitorsRepository;
     @Autowired
     EventsView eventsView;
     NativeSelect<Monitors> cmbMonitors;
     DatePicker datePicker;
-
+    
     public SearchView() {
     }
-
+    
     @PostConstruct
     private void init() {
-        setCaption("Search");
+        setCaption("ZoneMinderV");
         VerticalComponentGroup content = new VerticalComponentGroup();
-
+        
         cmbMonitors = new NativeSelect<>();
-        cmbMonitors.setItems(monitorsRepository.findAll());
+        if (monitorsRepository.count() > 0) {
+            List<Monitors> monitors = monitorsRepository.findAll();
+            cmbMonitors.setItems(monitors);
+            cmbMonitors.setValue(monitors.get(0));
+        }
         cmbMonitors.setItemCaptionGenerator(p -> p.getName());
         cmbMonitors.setEmptySelectionAllowed(false);
         cmbMonitors.setEmptySelectionCaption("Select monitor");
         content.addComponent(cmbMonitors);
         datePicker = new DatePicker("Event Date");
+        datePicker.setValue(new Date());
         content.addComponent(datePicker);
-
-        final Button submitButton = new Button("Submit");
-        submitButton.addClickListener((ClickEvent event) -> {
+        
+        final Button btnSearch = new Button("Search");
+        btnSearch.addClickListener((ClickEvent event) -> {
             DemoUI demoUI = (DemoUI) this.getUI();
             if (cmbMonitors.getValue() != null && datePicker.getValue() != null) {
                 demoUI.setMonitorId(cmbMonitors.getValue().getId());
@@ -66,8 +72,8 @@ public class SearchView extends NavigationView {
                 Notification.show("Select monitor and date");
             }
         });
-
-        setContent(new CssLayout(content, submitButton));
+        
+        setContent(new CssLayout(content, btnSearch));
     }
-
+    
 }
