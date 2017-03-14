@@ -24,5 +24,5 @@ public interface EventsRepository extends JpaRepository<Events, EventsPK> {
     @Query("SELECT e FROM Events e where e.eventsPK.monitorId = :monitorId and e.startTime <= :startTime order by e.startTime desc") 
     List<Events> findByMonitorAndStartTime(@Param("monitorId")int monitorId, 
             @Param("startTime")Date startTime);
-    
+        
 }

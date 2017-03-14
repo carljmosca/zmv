@@ -28,8 +28,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Frames.findAll", query = "SELECT f FROM Frames f")
-    , @NamedQuery(name = "Frames.findByEventId", query = "SELECT f FROM Frames f WHERE f.framesPK.eventId = :eventId")
-    , @NamedQuery(name = "Frames.findByFrameId", query = "SELECT f FROM Frames f WHERE f.framesPK.frameId = :frameId")
+    , @NamedQuery(name = "Frames.findByEventId", query = "SELECT f FROM Frames f WHERE f.id.eventId = :eventId")
+    , @NamedQuery(name = "Frames.findByFrameId", query = "SELECT f FROM Frames f WHERE f.id.frameId = :frameId")
     , @NamedQuery(name = "Frames.findByType", query = "SELECT f FROM Frames f WHERE f.type = :type")
     , @NamedQuery(name = "Frames.findByTimeStamp", query = "SELECT f FROM Frames f WHERE f.timeStamp = :timeStamp")
     , @NamedQuery(name = "Frames.findByDelta", query = "SELECT f FROM Frames f WHERE f.delta = :delta")
@@ -38,7 +38,7 @@ public class Frames implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @EmbeddedId
-    protected FramesPK framesPK;
+    protected FramesPK id;
     @Basic(optional = false)
     @Column(name = "Type")
     private String type;
@@ -57,12 +57,12 @@ public class Frames implements Serializable {
     public Frames() {
     }
 
-    public Frames(FramesPK framesPK) {
-        this.framesPK = framesPK;
+    public Frames(FramesPK id) {
+        this.id = id;
     }
 
-    public Frames(FramesPK framesPK, String type, Date timeStamp, BigDecimal delta, short score) {
-        this.framesPK = framesPK;
+    public Frames(FramesPK id, String type, Date timeStamp, BigDecimal delta, short score) {
+        this.id = id;
         this.type = type;
         this.timeStamp = timeStamp;
         this.delta = delta;
@@ -70,15 +70,15 @@ public class Frames implements Serializable {
     }
 
     public Frames(int eventId, int frameId) {
-        this.framesPK = new FramesPK(eventId, frameId);
+        this.id = new FramesPK(eventId, frameId);
     }
 
-    public FramesPK getFramesPK() {
-        return framesPK;
+    public FramesPK getId() {
+        return id;
     }
 
-    public void setFramesPK(FramesPK framesPK) {
-        this.framesPK = framesPK;
+    public void setId(FramesPK id) {
+        this.id = id;
     }
 
     public String getType() {
@@ -116,7 +116,7 @@ public class Frames implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (framesPK != null ? framesPK.hashCode() : 0);
+        hash += (id != null ? id.hashCode() : 0);
         return hash;
     }
 
@@ -127,7 +127,7 @@ public class Frames implements Serializable {
             return false;
         }
         Frames other = (Frames) object;
-        if ((this.framesPK == null && other.framesPK != null) || (this.framesPK != null && !this.framesPK.equals(other.framesPK))) {
+        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
         return true;
@@ -135,7 +135,7 @@ public class Frames implements Serializable {
 
     @Override
     public String toString() {
-        return "com.github.carljmosca.zmjet.entity.Frames[ framesPK=" + framesPK + " ]";
+        return "com.github.carljmosca.zmjet.entity.Frames[ framesPK=" + id + " ]";
     }
     
 }

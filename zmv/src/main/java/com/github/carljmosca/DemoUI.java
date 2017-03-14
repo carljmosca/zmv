@@ -38,6 +38,7 @@ public class DemoUI extends UI {
     SearchView searchView;
     private int monitorId;
     private Date eventStartTime;
+    private int eventId;
     
     @Override
     protected void init(VaadinRequest request) {
@@ -66,6 +67,14 @@ public class DemoUI extends UI {
 
     public void setEventStartTime(Date eventStartTime ) {
         this.eventStartTime = eventStartTime;
+    }
+
+    public int getEventId() {
+        return eventId;
+    }
+
+    public void setEventId(int eventId) {
+        this.eventId = eventId;
     }
 
 }

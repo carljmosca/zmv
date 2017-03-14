@@ -12,6 +12,7 @@ import com.vaadin.event.selection.SelectionEvent;
 import com.vaadin.shared.ui.grid.HeightMode;
 import com.vaadin.ui.Grid;
 import com.vaadin.ui.Notification;
+import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 import java.text.SimpleDateFormat;
 import javax.annotation.PostConstruct;
@@ -52,7 +53,9 @@ public class EventsView extends NavigationView {
         grid.setHeightByRows(10.0d);
         grid.setSelectionMode(Grid.SelectionMode.SINGLE);
         grid.addSelectionListener((SelectionEvent<Events> event) -> {
-            Notification.show(event.getFirstSelectedItem().get().getName());
+            DemoUI demoUI = (DemoUI)UI.getCurrent();
+            demoUI.setEventId(grid.getSelectedItems().stream().findFirst().get().getEventsPK().getId());
+            getNavigationManager().navigateTo(framesView);
         });
         grid.setSizeUndefined();
         VerticalLayout gridLayout = new VerticalLayout(grid);

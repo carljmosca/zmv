@@ -5,7 +5,10 @@
  */
 package com.github.carljmosca.ui;
 
+import com.github.carljmosca.DemoUI;
 import com.github.carljmosca.repository.FramesRepository;
+import com.github.carljmosca.zmv.entity.Frames;
+import java.util.List;
 import javax.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
@@ -23,6 +26,7 @@ public class FramesView extends NavigationView {
 
     @Autowired
     FramesRepository framesRepository;
+    List<Frames> frames;
 
     public FramesView() {
     }
@@ -31,5 +35,14 @@ public class FramesView extends NavigationView {
     private void init() {
         setCaption("Frames");
 
+    }
+    
+    @Override
+    public void onBecomingVisible() {
+        DemoUI demoUI = (DemoUI) this.getUI();
+        if (demoUI.getEventId() > 0) {
+            frames = framesRepository.findAll();
+            System.out.println(frames.size());
+        }
     }
 }
