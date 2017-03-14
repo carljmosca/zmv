@@ -18,7 +18,7 @@ import org.springframework.stereotype.Service;
 @Service
 public interface FramesRepository extends JpaRepository<Frames, FramesPK> {  
     
-//    List<Frames> findByFramesPKEventIdOrderByTimeStampDesc(int eventId);
-    List<Frames> findByIdEventId(int eventId);
+    List<Frames> findByIdEventIdOrderByTimeStampDesc(int eventId);
+    //List<Frames> findByIdEventId(int eventId);
     
 }
