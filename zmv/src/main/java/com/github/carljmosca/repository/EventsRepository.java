@@ -19,10 +19,15 @@ import org.springframework.stereotype.Service;
  * @author moscac
  */
 @Service
-public interface EventsRepository extends JpaRepository<Events, EventsPK> { 
-    
-    @Query("SELECT e FROM Events e where e.eventsPK.monitorId = :monitorId and e.startTime <= :startTime order by e.startTime desc") 
-    List<Events> findByMonitorAndStartTime(@Param("monitorId")int monitorId, 
-            @Param("startTime")Date startTime);
-        
+public interface EventsRepository extends JpaRepository<Events, EventsPK> {
+
+//    @Query("SELECT e FROM Events e where e.eventsPK.monitorId = :monitorId and e.startTime <= :startTime order by e.startTime desc")
+//    List<Events> findByMonitorAndStartTime(@Param("monitorId") int monitorId,
+//            @Param("startTime") Date startTime);
+
+//    @Query("SELECT e FROM Events e where e.eventsPK.monitorId = :monitorId and e.startTime <= :startTime order by e.eventsPK.id desc limit :offset, :rowcount")
+    @Query(value="SELECT * FROM Events e where e.monitorId = :monitorId and e.startTime <= :startTime order by e.id desc limit :offset, :rowcount", nativeQuery = true)
+    List<Events> findByMonitorAndStartTime(@Param("offset") int offset, @Param("rowcount") int rowcount, @Param("monitorId") int monitorId,
+            @Param("startTime") Date startTime);
+
 }

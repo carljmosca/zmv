@@ -41,7 +41,7 @@ public class FramesView extends NavigationView {
     public void onBecomingVisible() {
         DemoUI demoUI = (DemoUI) this.getUI();
         if (demoUI.getEventId() > 0) {
-            frames = framesRepository.findByIdEventIdOrderByTimeStampDesc(demoUI.getEventId());
+//            frames = framesRepository.findByIdEventIdOrderByTimeStampDesc(demoUI.getEventId());
             System.out.println(frames.size());
         }
     }
