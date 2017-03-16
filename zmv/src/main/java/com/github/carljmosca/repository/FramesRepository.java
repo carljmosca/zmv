@@ -9,6 +9,8 @@ import com.github.carljmosca.zmv.entity.Frames;
 import com.github.carljmosca.zmv.entity.FramesPK;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 
 /**
@@ -16,9 +18,11 @@ import org.springframework.stereotype.Service;
  * @author moscac
  */
 @Service
-public interface FramesRepository extends JpaRepository<Frames, FramesPK> {  
-    
-    List<Frames> findByIdEventIdOrderByTimeStampDesc(int eventId);
-    //List<Frames> findByIdEventId(int eventId);
-    
+public interface FramesRepository extends JpaRepository<Frames, FramesPK> {
+
+    //List<Frames> findByIdEventIdOrderByTimeStampDesc(int eventId);
+
+    @Query(value = "select * from Frames where EventId = :eventId order by timeStamp desc limit :offset, :rowcount", nativeQuery = true)
+    List<Frames> findByEventId(@Param("offset") int offset, @Param("rowcount") int rowcount, @Param("eventId") int eventId);
+
 }

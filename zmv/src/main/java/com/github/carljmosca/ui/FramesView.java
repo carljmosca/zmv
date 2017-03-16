@@ -8,6 +8,15 @@ package com.github.carljmosca.ui;
 import com.github.carljmosca.DemoUI;
 import com.github.carljmosca.repository.FramesRepository;
 import com.github.carljmosca.zmv.entity.Frames;
+import com.vaadin.server.FileResource;
+import com.vaadin.ui.Alignment;
+import com.vaadin.ui.Button;
+import com.vaadin.ui.GridLayout;
+import com.vaadin.ui.HorizontalLayout;
+import com.vaadin.ui.Image;
+import com.vaadin.ui.VerticalLayout;
+import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,22 +36,44 @@ public class FramesView extends NavigationView {
     @Autowired
     FramesRepository framesRepository;
     List<Frames> frames;
+    private final int PAGE_SIZE = 10;
+    private int offset;
+    private HorizontalLayout buttonLayout;
+    private HorizontalLayout imageLayout;
+    private VerticalLayout mainLayout;
+    private Button btnPrevious;
+    private Button btnNext;
 
     public FramesView() {
+        frames = new ArrayList<>();
     }
 
     @PostConstruct
     private void init() {
         setCaption("Frames");
-
+        btnPrevious = new Button("Previous");
+        btnNext = new Button("Next");
+        buttonLayout = new HorizontalLayout(btnPrevious, btnNext);
+        btnPrevious.setWidth("45%");
+        btnNext.setCaption("45%");
+        imageLayout = new HorizontalLayout();
     }
-    
+
     @Override
     public void onBecomingVisible() {
-        DemoUI demoUI = (DemoUI) this.getUI();
-        if (demoUI.getEventId() > 0) {
-//            frames = framesRepository.findByIdEventIdOrderByTimeStampDesc(demoUI.getEventId());
-            System.out.println(frames.size());
-        }
+        getFrames();
+        mainLayout = new VerticalLayout(buttonLayout, imageLayout);
+        setContent(mainLayout);
     }
+
+    private void getFrames() {
+        DemoUI demoUI = (DemoUI) this.getUI();
+        frames.addAll(framesRepository.findByEventId(offset, PAGE_SIZE, demoUI.getEventId()));
+        displayFrame();
+    }
+
+    private void displayFrame() {
+        imageLayout = new HorizontalLayout(new Image(null, new FileResource(new File("/Users/moscac/Downloads/GetMedia.jpeg"))));
+    }
+
 }

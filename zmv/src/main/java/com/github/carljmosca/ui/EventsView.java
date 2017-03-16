@@ -76,12 +76,11 @@ public class EventsView extends NavigationView {
             grid.setDataProvider(
                     (sortorder, offset, limit) -> eventsRepository.findByMonitorAndStartTime(
                             offset, limit, demoUI.getMonitorId(), demoUI.getEventStartTime()).stream(),
-                    //                            offset, limit, demoUI.getMonitorId(), demoUI.getEventStartTime()).stream(),
                     () -> (int) eventsRepository.count()
             );
             grid.setHeightMode(HeightMode.ROW);
             grid.setHeightByRows(10.0d);
-       }
+        }
     }
 
 }
